@@ -142,7 +142,7 @@ int main()
 
     printf("Ingrese las constantes separadas por @:\n");
 
-    fgets(cadena, MAX_LONGITUD, stdin) 
+    fgets(cadena, MAX_LONGITUD, stdin);
 
     cadena[strcspn(cadena, "\n")] = '\0'; /*acalarar en documentacion*/
 
