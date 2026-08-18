@@ -66,14 +66,14 @@ int esPalabra(char *s) /*pasa toda la palabra por el automata*/
 { /*en el documento auxiliar esta la tabla con los estados y transiciones*/
     static int tt[8][6] =
     {
-        {2,3,3,1,7,7},
-        {3,3,3,7,7,7},
-        {4,4,7,7,5,7},
-        {3,3,3,7,7,7},
-        {4,4,7,7,7,7},
-        {6,6,6,7,7,6},
-      	{6,6,6,7,7,6},
-    	{7,7,7,7,7,7}
+        {2,3,3,1,7,7}, /*0: inicial. '0'->2 (octal), digito->3 (decimal), signo->1 */
+        {7,3,3,7,7,7}, /*1: tras signo. '0'->7 (no se acepta signo+cero), digito->3 */
+        {4,4,7,7,5,7}, /*2: cero lider. "0" solo = DECIMAL. 'x'->5 (hex), digito octal->4 */
+        {3,3,3,7,7,7}, /*3: decimal (con o sin signo) */
+        {4,4,7,7,7,7}, /*4: octal (0 seguido de digitos octales) */
+        {6,6,6,7,7,6}, /*5: tras '0x', espera digito hex */
+      	{6,6,6,7,7,6}, /*6: hexadecimal */
+    	{7,7,7,7,7,7}  /*7: estado muerto / error */
     };
 
     int e = 0; /*numero de estado, arranca por el inicial*/
@@ -87,13 +87,13 @@ int esPalabra(char *s) /*pasa toda la palabra por el automata*/
     }
 
     if(e == 2 || e == 3)
-        return 1;
+        return 1; /*decimal: estado 3 = decimal comun, estado 2 = "0" solo*/
 
     if(e == 4)
-        return 2;
+        return 2; /*octal: "0" seguido de digitos octales*/
 
     if(e == 6)
-        return 3;
+        return 3; /*hexadecimal*/
 
     return 0;
 }
